@@ -1,4 +1,4 @@
-import searcher from '../querier'
+import searcher from '../searcher'
 import nock from 'nock'
 
 describe('searcher({ username, token })', ()=> {
