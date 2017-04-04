@@ -10,7 +10,7 @@ describe('searcher({ username, token })', ()=> {
     expect(searchPr instanceof Function).toBe(true)
   })
 
-  describe.only('searchPr(query)', ()=> {
+  describe('searchPr(query)', ()=> {
     let searchPr
     const query = {
       name: 'Requested Change',
@@ -55,7 +55,7 @@ describe('searcher({ username, token })', ()=> {
           done()
         })
     })
-    it.only('resolves the returned objects with desired format', (done)=> {
+    it('resolves the returned objects with desired format', (done)=> {
       let nockScopes = query.conditions.map((c, index)=> {
         return mockGithubRequest(c, mockGithubBody(`name-${index}`))
       })
