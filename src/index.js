@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import queries from './queries'
 import runner from './runner'
 import yaml from 'js-yaml'

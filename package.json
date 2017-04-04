@@ -15,7 +15,7 @@
   },
   "scripts": {
     "test": "jest --watch",
-    "build": "babel src --out-dir lib --ignore spec.js,test.js"
+    "build": "babel src --out-dir lib --ignore spec.js,test.js; chmod a+x ./lib/index.js"
   },
   "dependencies": {
     "babel-cli": "^6.24.0",
@@ -27,6 +27,6 @@
     "request": "^2.81.0"
   },
   "bin": {
-    "qpr": "node ./lib/index.js"
+    "qpr": "./lib/index.js"
   }
 }
