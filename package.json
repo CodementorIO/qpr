@@ -11,13 +11,17 @@
     "babel-jest": "^19.0.0",
     "babel-preset-es2015": "^6.24.0",
     "jest": "^19.0.2",
-    "nock": "^9.0.11"
+    "nock": "^9.1.4"
   },
   "scripts": {
     "test": "jest --watch",
     "build": "babel src --out-dir lib --ignore spec.js,test.js; chmod a+x ./lib/index.js"
   },
+  "jest": {
+    "testEnvironment": "node"
+  },
   "dependencies": {
+    "axios": "^0.17.1",
     "babel-cli": "^6.24.0",
     "colors": "^1.1.2",
     "js-yaml": "^3.8.2",
