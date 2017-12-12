@@ -33,6 +33,7 @@ describe('toMerged', ()=> {
 
     res.then((items)=> {
       expect(items).toEqual(body.items)
+      nockScope.done()
       done()
     })
   })
