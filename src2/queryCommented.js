@@ -1,26 +1,35 @@
 import isCommentedQuerier from './isCommentedQuerier'
 
-export default async ({ username, token, poolPromise }) => {
+export default async ({ queryName, username, token, poolPromise }) => {
   let isCommented = isCommentedQuerier.querier
 
-  let nonReviewedPrs = await poolPromise
+  let { items } = await poolPromise
+  let nonReviewedPrs = items
   let commentedPrs = []
 
   let isCommentedPromises = nonReviewedPrs.map((pr)=> {
-    return isCommented({ username, token, number: pr.number})
+    return isCommented({
+      username,
+      token,
+      number: pr.number,
+      repoFullName: extractRepoFullName(pr)
+    })
   })
 
   let results = await Promise.all(isCommentedPromises)
 
-  results.forEach(({ owner, repo, number, commented }) => {
+  results.forEach(({ repoFullName, number, commented }) => {
     if (commented) {
       commentedPrs.push(nonReviewedPrs.find(pr => {
         return pr.number === number &&
-          pr.repo.owner.login === owner &&
-          pr.repo.name === repo
+          extractRepoFullName(pr) === repoFullName
       }))
     }
   })
 
-  return commentedPrs
+  return { queryName, items: commentedPrs}
+}
+
+function extractRepoFullName (pr) {
+  return pr.repository_url.replace('https://api.github.com/repos/', '')
 }

@@ -1,6 +1,6 @@
 export default ({ searchers, logger })=> {
   return Promise.all(searchers)
     .then((values)=> {
-      logger(values)
+      values.forEach(vs => logger(vs))
     })
 }

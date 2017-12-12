@@ -2,7 +2,7 @@ import axios from 'axios'
 
 const GITHUB_ENDPOINT = 'https://api.github.com/search/issues'
 
-export default async ({ username, token, condition }) => {
+export default async ({ queryName, username, token, condition }) => {
   let res = await axios.get(GITHUB_ENDPOINT, {
     auth: {
       username,
@@ -11,5 +11,5 @@ export default async ({ username, token, condition }) => {
     params: { q: condition }
   })
 
-  return res.data.items
+  return { queryName, items: res.data.items }
 }
