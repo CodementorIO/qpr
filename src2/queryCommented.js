@@ -12,9 +12,13 @@ export default async ({ username, token, poolPromise }) => {
 
   let results = await Promise.all(isCommentedPromises)
 
-  results.forEach(({ number, commented }) => {
+  results.forEach(({ owner, repo, number, commented }) => {
     if (commented) {
-      commentedPrs.push(nonReviewedPrs.find(pr => pr.number == number))
+      commentedPrs.push(nonReviewedPrs.find(pr => {
+        return pr.number === number &&
+          pr.repo.owner.login === owner &&
+          pr.repo.name === repo
+      }))
     }
   })
 
