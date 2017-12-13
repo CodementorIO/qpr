@@ -4,20 +4,14 @@ import isCommentedQuerier from '../src2/isCommentedQuerier'
 describe('queryCommented()', ()=> {
   let username = 'the-username'
   let token = 'the-token'
+  let queryName = 'Commented'
 
   beforeEach(()=> {
     jest.spyOn(isCommentedQuerier, 'querier').mockImplementation(({ number })=> {
       if (number == 1) {
         return Promise.resolve(mockCommentedResolver(number, true))
-        // return Promise.resolve({
-        //   number,
-        //   owner: 'owner-1',
-        //   repo: ,
-        //   commented: true
-        // })
       } else {
         return Promise.resolve(mockCommentedResolver(number, false))
-        // return Promise.resolve({ number, commented: false })
       }
     })
   })
@@ -26,14 +20,14 @@ describe('queryCommented()', ()=> {
     return {
       number,
       commented,
-      repo: `the-repo-${number}`,
-      owner: `owner-${number}`
+      repoFullName: `owner-${number}/the-repo-${number}`
     }
   }
 
   function mockIssueResp (number) {
     return {
       number,
+      repository_url: `https://api.github.com/repos/owner-${number}/the-repo-${number}`,
       pull_request: {
         title: `title-${number}`
       },
@@ -47,16 +41,18 @@ describe('queryCommented()', ()=> {
   }
 
   it('sends request to github to search commented', (done)=> {
-    let poolPromise = Promise.resolve([
-      mockIssueResp(1),
-      mockIssueResp(2),
-      mockIssueResp(3)
-    ])
+    let poolPromise = Promise.resolve({
+      items: [
+        mockIssueResp(1),
+        mockIssueResp(2),
+        mockIssueResp(3)
+      ]
+    })
 
-    let res = queryCommented({ username, token, poolPromise })
+    let res = queryCommented({ username, token, poolPromise, queryName })
 
     res.then((values)=> {
-      expect(values).toEqual([ mockIssueResp(1) ])
+      expect(values).toEqual({ queryName, items: [ mockIssueResp(1) ]})
       done()
     })
   })

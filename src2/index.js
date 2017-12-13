@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import runner from './runner'
 import logger from './logger'
 

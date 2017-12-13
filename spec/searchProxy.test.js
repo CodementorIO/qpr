@@ -5,6 +5,7 @@ describe('toMerged', ()=> {
   let username = 'the-username'
   let token = 'the-token'
   let condition = 'the-condition'
+  let queryName = 'the-query-name'
 
   function mockGithubAPI (condition, body) {
     return nock('https://api.github.com')
@@ -29,10 +30,10 @@ describe('toMerged', ()=> {
       ]
     }
     let nockScope = mockGithubAPI(condition, body)
-    let res = searchProxy({ username, token, condition })
+    let res = searchProxy({ username, token, condition, queryName })
 
     res.then((items)=> {
-      expect(items).toEqual(body.items)
+      expect(items).toEqual({ items: body.items, queryName })
       nockScope.done()
       done()
     })

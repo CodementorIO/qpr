@@ -1,14 +1,13 @@
 import isCommentedQuerier from '../src2/isCommentedQuerier'
 import nock from 'nock'
 
-describe('isCommentedQuerier({ username, token, owner, repo, number })', ()=> {
+describe('isCommentedQuerier({ username, token, repoFullName, number })', ()=> {
   let reviewsNock, reviewersNock
   let reviewsBody, reviewersBody
 
   let username = 'the-username'
   let token = 'the-token'
-  let owner = 'repo-owner'
-  let repo = 'repo-name'
+  let repoFullName = 'repo-owner/repo-name'
   let number = 26
 
   function nockReviews (ownerUsernames) {
@@ -18,7 +17,7 @@ describe('isCommentedQuerier({ username, token, owner, repo, number })', ()=> {
       }
     })
     return nock('https://api.github.com')
-      .get(`/repos/${owner}/${repo}/pulls/${number}/reviews`)
+      .get(`/repos/${repoFullName}/pulls/${number}/reviews`)
       .basicAuth({
         user: username,
         pass: token
@@ -30,7 +29,7 @@ describe('isCommentedQuerier({ username, token, owner, repo, number })', ()=> {
       return { login: u }
     })
     return nock('https://api.github.com')
-      .get(`/repos/${owner}/${repo}/pulls/${number}/requested_reviewers`)
+      .get(`/repos/${repoFullName}/pulls/${number}/requested_reviewers`)
       .basicAuth({
         user: username,
         pass: token
@@ -42,13 +41,12 @@ describe('isCommentedQuerier({ username, token, owner, repo, number })', ()=> {
     reviewsNock = nockReviews([ 'username1', 'username2' ])
     reviewersNock = nockReviewers([ 'username1' ])
 
-    isCommentedQuerier.querier({ username, token, owner, repo, number })
+    isCommentedQuerier.querier({ username, token, repoFullName, number })
       .then((result)=> {
         reviewsNock.done()
         reviewersNock.done()
         expect(result).toEqual({
-          repo,
-          owner,
+          repoFullName,
           number,
           commented: true
         })
@@ -59,13 +57,12 @@ describe('isCommentedQuerier({ username, token, owner, repo, number })', ()=> {
     reviewsNock = nockReviews([ 'username1' ])
     reviewersNock = nockReviewers([ 'username1', 'username2' ])
 
-    isCommentedQuerier.querier({ username, token, owner, repo, number })
+    isCommentedQuerier.querier({ username, token, repoFullName, number })
       .then((result)=> {
         reviewsNock.done()
         reviewersNock.done()
         expect(result).toEqual({
-          repo,
-          owner,
+          repoFullName,
           number,
           commented: false
         })

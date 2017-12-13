@@ -2,14 +2,14 @@ import runner from '../src2/runner'
 
 describe('Runner', ()=> {
   let mockLogger
-  let createMockSearcher = (name) => {
-    return Promise.resolve({
-      name,
-      pullRequests: {
+  function mockSearchResult (name) {
+    return {
+      queryName: name,
+      items: {
         title: `PR with title ${name}`,
         url: `url-with-${name}`
       }
-    })
+    }
   }
   beforeEach(()=> {
     mockLogger = jest.fn()
@@ -17,8 +17,8 @@ describe('Runner', ()=> {
 
   it('takes searchers and pipes them into logger', (done)=> {
     let searchers = [
-      createMockSearcher('pr1'),
-      createMockSearcher('pr2')
+      Promise.resolve(mockSearchResult('pr1')),
+      Promise.resolve(mockSearchResult('pr2'))
     ]
     let resultPromise = runner({
       searchers,
@@ -26,22 +26,12 @@ describe('Runner', ()=> {
     })
 
     resultPromise.then(()=> {
-      expect(mockLogger).toBeCalledWith([
-        {
-          name: 'pr1',
-          pullRequests: {
-            title: `PR with title pr1`,
-            url: `url-with-pr1`
-          }
-        },
-        {
-          name: 'pr2',
-          pullRequests: {
-            title: `PR with title pr2`,
-            url: `url-with-pr2`
-          }
-        }
-      ])
+      [
+        mockSearchResult('pr1'), mockSearchResult('pr2')
+      ].forEach(item => {
+        expect(mockLogger).toBeCalledWith(item)
+      })
+
       done()
     })
   })
