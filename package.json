@@ -14,8 +14,9 @@
     "nock": "^9.1.4"
   },
   "scripts": {
+    "jest": "jest",
     "test": "jest --watch",
-    "build": "babel src --out-dir lib --ignore spec.js,test.js; chmod a+x ./lib/index.js"
+    "build": "babel src --out-dir dist --ignore spec.js,test.js; chmod a+x ./dist/index.js"
   },
   "jest": {
     "testEnvironment": "node"
@@ -31,6 +32,6 @@
     "request": "^2.81.0"
   },
   "bin": {
-    "qpr": "./lib/index.js"
+    "qpr": "./dist/index.js"
   }
 }
