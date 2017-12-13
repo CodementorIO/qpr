@@ -8,20 +8,23 @@ var _colors2 = require('colors');
 
 var _colors3 = _interopRequireDefault(_colors2);
 
+var _lodash = require('lodash.get');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = function (_ref) {
-  var name = _ref.name,
-      repos = _ref.repos;
+  var queryName = _ref.queryName,
+      items = _ref.items;
 
-  if (repos.length === 0) {
+  if (items.length === 0) {
     return;
   }
-  console.log(('=== ' + name + ' ===').bold);
-  repos.forEach(function (_ref2) {
-    var title = _ref2.title,
-        url = _ref2.url;
-
+  console.log(('=== ' + queryName + ' ===').bold);
+  items.forEach(function (item) {
+    var title = item.title;
+    var url = (0, _lodash2.default)(item, ['pull_request', 'html_url']);
     console.log(' ' + '*'.red + ' ' + title);
     console.log('   ' + url);
   });

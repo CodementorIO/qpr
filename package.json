@@ -1,6 +1,6 @@
 {
   "name": "qpr",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Github pull request querier",
   "main": "index.js",
   "repository": {},
@@ -11,22 +11,26 @@
     "babel-jest": "^19.0.0",
     "babel-preset-es2015": "^6.24.0",
     "jest": "^19.0.2",
-    "nock": "^9.0.11"
+    "nock": "^9.1.4"
   },
   "scripts": {
+    "jest": "jest",
     "test": "jest --watch",
-    "build": "babel src --out-dir lib --ignore spec.js,test.js; chmod a+x ./lib/index.js"
+    "build": "babel src --out-dir dist --ignore spec.js,test.js; chmod a+x ./dist/index.js"
+  },
+  "jest": {
+    "testEnvironment": "node"
   },
   "dependencies": {
+    "axios": "^0.17.1",
     "babel-cli": "^6.24.0",
     "colors": "^1.1.2",
     "js-yaml": "^3.8.2",
     "lodash.flatmap": "^4.5.0",
     "lodash.get": "^4.4.2",
-    "node-fetch": "^1.6.3",
     "request": "^2.81.0"
   },
   "bin": {
-    "qpr": "./lib/index.js"
+    "qpr": "./dist/index.js"
   }
 }
