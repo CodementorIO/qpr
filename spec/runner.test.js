@@ -1,4 +1,4 @@
-import runner from '../src2/runner'
+import runner from '../src/runner'
 
 describe('Runner', ()=> {
   let mockLogger

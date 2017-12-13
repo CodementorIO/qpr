@@ -1,4 +1,4 @@
-import isCommentedQuerier from '../src2/isCommentedQuerier'
+import isCommentedQuerier from '../src/isCommentedQuerier'
 import nock from 'nock'
 
 describe('isCommentedQuerier({ username, token, repoFullName, number })', ()=> {

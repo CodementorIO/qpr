@@ -10,44 +10,48 @@ var _isCommentedQuerier2 = _interopRequireDefault(_isCommentedQuerier);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = async function (_ref) {
-  var queryName = _ref.queryName,
-      username = _ref.username,
-      token = _ref.token,
-      poolPromise = _ref.poolPromise;
+exports.default = function (_ref) {
+  var username = _ref.username,
+      token = _ref.token;
+  return async function (_ref2) {
+    var queryName = _ref2.queryName,
+        username = _ref2.username,
+        token = _ref2.token,
+        poolPromise = _ref2.poolPromise;
 
-  var isCommented = _isCommentedQuerier2.default.querier;
+    var isCommented = _isCommentedQuerier2.default.querier;
 
-  var _ref2 = await poolPromise,
-      items = _ref2.items;
+    var _ref3 = await poolPromise,
+        items = _ref3.items;
 
-  var nonReviewedPrs = items;
-  var commentedPrs = [];
+    var nonReviewedPrs = items;
+    var commentedPrs = [];
 
-  var isCommentedPromises = nonReviewedPrs.map(function (pr) {
-    return isCommented({
-      username: username,
-      token: token,
-      number: pr.number,
-      repoFullName: extractRepoFullName(pr)
+    var isCommentedPromises = nonReviewedPrs.map(function (pr) {
+      return isCommented({
+        username: username,
+        token: token,
+        number: pr.number,
+        repoFullName: extractRepoFullName(pr)
+      });
     });
-  });
 
-  var results = await Promise.all(isCommentedPromises);
+    var results = await Promise.all(isCommentedPromises);
 
-  results.forEach(function (_ref3) {
-    var repoFullName = _ref3.repoFullName,
-        number = _ref3.number,
-        commented = _ref3.commented;
+    results.forEach(function (_ref4) {
+      var repoFullName = _ref4.repoFullName,
+          number = _ref4.number,
+          commented = _ref4.commented;
 
-    if (commented) {
-      commentedPrs.push(nonReviewedPrs.find(function (pr) {
-        return pr.number === number && extractRepoFullName(pr) === repoFullName;
-      }));
-    }
-  });
+      if (commented) {
+        commentedPrs.push(nonReviewedPrs.find(function (pr) {
+          return pr.number === number && extractRepoFullName(pr) === repoFullName;
+        }));
+      }
+    });
 
-  return { queryName: queryName, items: commentedPrs };
+    return { queryName: queryName, items: commentedPrs };
+  };
 };
 
 function extractRepoFullName(pr) {

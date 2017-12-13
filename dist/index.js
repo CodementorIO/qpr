@@ -40,33 +40,27 @@ var _yaml$safeLoad = _jsYaml2.default.safeLoad(_fs2.default.readFileSync(_path2.
     token = _yaml$safeLoad.token,
     repoOwner = _yaml$safeLoad.repoOwner;
 
-var nonReviewedPrsPool = (0, _searchProxy2.default)({
-  username: username,
-  token: token,
+var searchProxy = (0, _searchProxy2.default)({ username: username, token: token });
+var queryCommented = (0, _queryCommented2.default)({ username: username, token: token });
+
+var nonReviewedPrsPool = searchProxy({
+  queryName: '_',
   condition: 'user:' + repoOwner + ' author:' + username + ' type:pr state:open review:none'
 });
 
 (0, _runner2.default)({
   logger: _logger2.default,
-  searchers: [(0, _searchProxy2.default)({
-    username: username,
-    token: token,
+  searchers: [searchProxy({
     queryName: 'To Review',
     condition: 'user:' + repoOwner + ' type:pr state:open review-requested:' + username
-  }), (0, _searchProxy2.default)({
-    username: username,
-    token: token,
+  }), searchProxy({
     queryName: 'To Be Merged',
     condition: 'user:' + repoOwner + ' author:' + username + ' type:pr state:open review:approved'
-  }), (0, _searchProxy2.default)({
-    username: username,
-    token: token,
+  }), searchProxy({
     queryName: 'Requested Change',
     condition: 'user:' + repoOwner + ' author:' + username + ' type:pr state:open review:changes_requested'
 
-  }), (0, _queryCommented2.default)({
-    username: username,
-    token: token,
+  }), queryCommented({
     queryName: 'Commented',
     poolPromise: nonReviewedPrsPool
   })]

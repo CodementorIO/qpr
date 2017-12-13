@@ -1,4 +1,4 @@
-import searchProxy from '../src2/searchProxy'
+import searchProxy from '../src/searchProxy'
 import nock from 'nock'
 
 describe('toMerged', ()=> {
@@ -30,7 +30,7 @@ describe('toMerged', ()=> {
       ]
     }
     let nockScope = mockGithubAPI(condition, body)
-    let res = searchProxy({ username, token, condition, queryName })
+    let res = searchProxy({ username, token })({ condition, queryName })
 
     res.then((items)=> {
       expect(items).toEqual({ items: body.items, queryName })

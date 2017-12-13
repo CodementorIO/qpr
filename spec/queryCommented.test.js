@@ -1,5 +1,5 @@
-import queryCommented from '../src2/queryCommented'
-import isCommentedQuerier from '../src2/isCommentedQuerier'
+import queryCommented from '../src/queryCommented'
+import isCommentedQuerier from '../src/isCommentedQuerier'
 
 describe('queryCommented()', ()=> {
   let username = 'the-username'
@@ -49,7 +49,7 @@ describe('queryCommented()', ()=> {
       ]
     })
 
-    let res = queryCommented({ username, token, poolPromise, queryName })
+    let res = queryCommented({ username, token })({ poolPromise, queryName })
 
     res.then((values)=> {
       expect(values).toEqual({ queryName, items: [ mockIssueResp(1) ]})
