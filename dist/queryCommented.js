@@ -15,8 +15,6 @@ exports.default = function (_ref) {
       token = _ref.token;
   return async function (_ref2) {
     var queryName = _ref2.queryName,
-        username = _ref2.username,
-        token = _ref2.token,
         poolPromise = _ref2.poolPromise;
 
     var isCommented = _isCommentedQuerier2.default.querier;

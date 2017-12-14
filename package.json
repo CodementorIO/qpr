@@ -1,6 +1,6 @@
 {
   "name": "qpr",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Github pull request querier",
   "main": "index.js",
   "repository": {},
