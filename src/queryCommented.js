@@ -1,6 +1,6 @@
 import isCommentedQuerier from './isCommentedQuerier'
 
-export default ({username, token}) => async ({queryName, username, token, poolPromise}) => {
+export default ({username, token}) => async ({queryName, poolPromise}) => {
   let isCommented = isCommentedQuerier.querier
 
   let { items } = await poolPromise
