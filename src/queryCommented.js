@@ -12,7 +12,8 @@ export default ({username, token}) => async ({queryName, poolPromise}) => {
       username,
       token,
       number: pr.number,
-      repoFullName: extractRepoFullName(pr)
+      repoFullName: extractRepoFullName(pr),
+      prOwner: extractPrOwner(pr)
     })
   })
 
@@ -32,4 +33,8 @@ export default ({username, token}) => async ({queryName, poolPromise}) => {
 
 function extractRepoFullName (pr) {
   return pr.repository_url.replace('https://api.github.com/repos/', '')
+}
+
+function extractPrOwner (pr) {
+  return pr.user.login
 }

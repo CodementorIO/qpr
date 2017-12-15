@@ -2,7 +2,7 @@ import axios from 'axios'
 
 const GITHUB_BASE = 'https://api.github.com'
 
-async function querier({ username, token, repoFullName, number }) {
+async function querier({ username, token, prOwner, repoFullName, number }) {
   let reviewsPromise = axios.get(
     `${GITHUB_BASE}/repos/${repoFullName}/pulls/${number}/reviews`, {
       auth: {
@@ -24,7 +24,10 @@ async function querier({ username, token, repoFullName, number }) {
   let reviewGivers = reviewsResp.data.map( r => r.user.login)
   let reviewers = reviewersResp.data.map( r => r.login)
 
-  let commented = !included(reviewGivers, reviewers)
+  let commented = !included(
+    reviewGivers.filter(r => r !== prOwner),
+    reviewers
+  )
 
   return { repoFullName, number, commented }
 }

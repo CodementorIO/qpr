@@ -31,8 +31,11 @@ describe('queryCommented()', ()=> {
       pull_request: {
         title: `title-${number}`
       },
+      user: {
+        login: `the-pr-owner-${number}`
+      },
       repo: {
-        name: `the-repo-${number}`,
+        name: `the-repo-name-${number}`,
         owner: {
           login: `owner-${number}`
         }
@@ -52,6 +55,13 @@ describe('queryCommented()', ()=> {
     let res = queryCommented({ username, token })({ poolPromise, queryName })
 
     res.then((values)=> {
+      expect(isCommentedQuerier.querier).toBeCalledWith({
+        username,
+        token,
+        number: 1,
+        repoFullName: 'owner-1/the-repo-1',
+        prOwner: 'the-pr-owner-1'
+      })
       expect(values).toEqual({ queryName, items: [ mockIssueResp(1) ]})
       done()
     })

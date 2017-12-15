@@ -1,13 +1,14 @@
 import isCommentedQuerier from '../src/isCommentedQuerier'
 import nock from 'nock'
 
-describe('isCommentedQuerier({ username, token, repoFullName, number })', ()=> {
+describe('isCommentedQuerier({ username, token, prOwner, repoFullName, number })', ()=> {
   let reviewsNock, reviewersNock
   let reviewsBody, reviewersBody
 
   let username = 'the-username'
   let token = 'the-token'
   let repoFullName = 'repo-owner/repo-name'
+  let prOwner = 'the-prOwner'
   let number = 26
 
   function nockReviews (ownerUsernames) {
@@ -41,7 +42,7 @@ describe('isCommentedQuerier({ username, token, repoFullName, number })', ()=> {
     reviewsNock = nockReviews([ 'username1', 'username2' ])
     reviewersNock = nockReviewers([ 'username1' ])
 
-    isCommentedQuerier.querier({ username, token, repoFullName, number })
+    isCommentedQuerier.querier({ username, token, prOwner, repoFullName, number })
       .then((result)=> {
         reviewsNock.done()
         reviewersNock.done()
@@ -57,7 +58,23 @@ describe('isCommentedQuerier({ username, token, repoFullName, number })', ()=> {
     reviewsNock = nockReviews([ 'username1' ])
     reviewersNock = nockReviewers([ 'username1', 'username2' ])
 
-    isCommentedQuerier.querier({ username, token, repoFullName, number })
+    isCommentedQuerier.querier({ username, token, prOwner, repoFullName, number })
+      .then((result)=> {
+        reviewsNock.done()
+        reviewersNock.done()
+        expect(result).toEqual({
+          repoFullName,
+          number,
+          commented: false
+        })
+        done()
+      })
+  })
+  it('excludes the prOwner when resolving the review givers', (done)=> {
+    reviewsNock = nockReviews([ 'username1', prOwner ])
+    reviewersNock = nockReviewers([ 'username1', 'username2' ])
+
+    isCommentedQuerier.querier({ username, token, prOwner, repoFullName, number })
       .then((result)=> {
         reviewsNock.done()
         reviewersNock.done()
