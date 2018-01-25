@@ -12,5 +12,7 @@ exports.default = function (_ref) {
     values.forEach(function (vs) {
       return logger(vs);
     });
+  }).catch(function (e) {
+    return console.log(e);
   });
 };

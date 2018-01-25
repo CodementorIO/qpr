@@ -30,7 +30,8 @@ exports.default = function (_ref) {
         username: username,
         token: token,
         number: pr.number,
-        repoFullName: extractRepoFullName(pr)
+        repoFullName: extractRepoFullName(pr),
+        prOwner: extractPrOwner(pr)
       });
     });
 
@@ -54,4 +55,8 @@ exports.default = function (_ref) {
 
 function extractRepoFullName(pr) {
   return pr.repository_url.replace('https://api.github.com/repos/', '');
+}
+
+function extractPrOwner(pr) {
+  return pr.user.login;
 }

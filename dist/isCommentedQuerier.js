@@ -15,6 +15,7 @@ var GITHUB_BASE = 'https://api.github.com';
 async function querier(_ref) {
   var username = _ref.username,
       token = _ref.token,
+      prOwner = _ref.prOwner,
       repoFullName = _ref.repoFullName,
       number = _ref.number;
 
@@ -37,11 +38,13 @@ async function querier(_ref) {
   var reviewGivers = reviewsResp.data.map(function (r) {
     return r.user.login;
   });
-  var reviewers = reviewersResp.data.map(function (r) {
+  var reviewers = reviewersResp.data.users.map(function (r) {
     return r.login;
   });
 
-  var commented = !included(reviewGivers, reviewers);
+  var commented = !included(reviewGivers.filter(function (r) {
+    return r !== prOwner;
+  }), reviewers);
 
   return { repoFullName: repoFullName, number: number, commented: commented };
 }

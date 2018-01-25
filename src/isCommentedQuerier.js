@@ -22,7 +22,7 @@ async function querier({ username, token, prOwner, repoFullName, number }) {
   let reviewersResp = await reviewersPromise
 
   let reviewGivers = reviewsResp.data.map( r => r.user.login)
-  let reviewers = reviewersResp.data.map( r => r.login)
+  let reviewers = reviewersResp.data.users.map( r => r.login)
 
   let commented = !included(
     reviewGivers.filter(r => r !== prOwner),

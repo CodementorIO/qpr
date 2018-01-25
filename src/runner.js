@@ -3,4 +3,5 @@ export default ({ searchers, logger })=> {
     .then((values)=> {
       values.forEach(vs => logger(vs))
     })
+    .catch(e => console.log(e))
 }
