@@ -36,7 +36,10 @@ runner({
     searchProxy({
       queryName: 'Requested Change',
       condition: `user:${repoOwner} author:${username} type:pr state:open review:changes_requested`
-
+    }),
+    searchProxy({
+      queryName: 'Needs QA',
+      condition: `user:${repoOwner} assignee:${username} type:pr state:open NOT shipit`,
     }),
     queryCommented({
       queryName: 'Commented',
